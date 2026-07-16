@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>BlackQueens Authentication</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/custom_style.css">
+</head>
+
+<body class="loading">
+    <!-- 1. Header Placeholder -->
+    <div id="header-placeholder"></div>
+
+    <!-- 2. Main Content Area -->
+    <main class="auth-main">
+        <div class="container">
+            <!-- Brand Header (Logo top, Brand name bottom) -->
+            <div class="brand-header">
+                <img src="assets/images/logo.svg" alt="BlackQueens Logo" class="brand-logo">
+                <span class="brand-name">BlackQueens</span>
+            </div>
+
+            <!-- Success View -->
+            <div class="card card-success">
+                <h1>BlackQueens Login Successful</h1>
+                <p>Authentication was successful. Return to the app to continue.</p>
+                <div class="timer">
+                    <span class="timer-dot"></span>
+                    <span id="msg">Closing in <strong id="c">3</strong>s...</span>
+                </div>
+            </div>
+
+            <!-- Error View -->
+            <div class="card card-error">
+                <h1>Authentication failed</h1>
+                <div id="error-details" class="detail">Something went wrong.</div>
+            </div>
+
+            <!-- Loading View -->
+            <div class="card card-loading">
+                <div class="loading-spinner-wrap">
+                    <div class="spinner"></div>
+                </div>
+                <h1>Verifying details</h1>
+                <p>Completing authentication process. Please hold on.</p>
+            </div>
+        </div>
+    </main>
+
+    <!-- 3. Footer Placeholder -->
+    <div id="footer-placeholder"></div>
+
+    <!-- 4. Loader Script to load Header/Footer -->
+    <script src="assets/js/loader.js"></script>
+
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const hashParams = new URLSearchParams(window.location.hash.substring(1));
+
+        const error = urlParams.get('error') || hashParams.get('error');
+        const errorDesc = urlParams.get('error_description') || hashParams.get('error_description') || urlParams.get('error_msg') || hashParams.get('error_msg');
+        const code = urlParams.get('code') || hashParams.get('code');
+        const accessToken = urlParams.get('access_token') || hashParams.get('access_token');
+
+        if (error || errorDesc) {
+            document.body.className = 'error';
+            document.getElementById('error-details').textContent = errorDesc || error || 'Authentication failed.';
+        } else if (code || accessToken) {
+            document.body.className = 'success';
+            let t = 3;
+            const el = document.getElementById('c');
+            const iv = setInterval(() => {
+                t--;
+                if (el) el.textContent = t;
+                if (t <= 0) {
+                    clearInterval(iv);
+                    window.close();
+                }
+            }, 1000);
+        } else {
+            setTimeout(() => {
+                const refreshedHashParams = new URLSearchParams(window.location.hash.substring(1));
+                const secondAccessToken = refreshedHashParams.get('access_token');
+                const secondError = refreshedHashParams.get('error') || refreshedHashParams.get('error_description');
+
+                if (secondAccessToken) {
+                    document.body.className = 'success';
+                    let t = 3;
+                    const el = document.getElementById('c');
+                    const iv = setInterval(() => {
+                        t--;
+                        if (el) el.textContent = t;
+                        if (t <= 0) {
+                            clearInterval(iv);
+                            window.close();
+                        }
+                    }, 1000);
+                } else if (secondError) {
+                    document.body.className = 'error';
+                    document.getElementById('error-details').textContent = secondError;
+                } else {
+                    document.body.className = 'error';
+                    document.getElementById('error-details').textContent = 'No authentication response received.';
+                }
+            }, 800);
+        }
+    </script>
+</body>
+
+</html>

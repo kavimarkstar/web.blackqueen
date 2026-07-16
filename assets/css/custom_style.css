@@ -1,0 +1,157 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background-color: #000000 !important;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    color: #ffffff;
+}
+
+#header-placeholder, #footer-placeholder {
+    width: 100%;
+}
+
+.auth-main {
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    max-width: 500px;
+}
+
+/* Brand Header */
+.brand-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 32px;
+    animation: fadeIn 0.4s ease-out;
+}
+
+.brand-logo {
+    width: 64px;
+    height: 64px;
+    object-fit: contain;
+}
+
+.brand-name {
+    font-size: 1.625rem;
+    font-weight: 700;
+    color: #ffffff;
+    letter-spacing: -0.03em;
+}
+
+/* Card */
+.card {
+    text-align: center;
+    width: 100%;
+    display: none;
+    animation: fadeIn 0.4s ease-out;
+}
+
+body.success .card-success,
+body.error .card-error,
+body.loading .card-loading {
+    display: block;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Typography */
+h1 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #ffffff;
+    margin-bottom: 12px;
+    letter-spacing: -0.02em;
+}
+
+p {
+    font-size: 0.95rem;
+    color: #94a3b8;
+    line-height: 1.6;
+    margin-bottom: 16px;
+}
+
+/* Plain text error details without box styling */
+.detail {
+    color: #f87171;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    word-break: break-all;
+    margin-bottom: 16px;
+}
+
+.timer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    color: #64748b;
+    font-size: 0.9rem;
+    margin-top: 12px;
+}
+
+.timer-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background-color: #4ade80;
+    animation: pulse 1s infinite;
+}
+
+/* Spinner for Loading */
+.loading-spinner-wrap {
+    margin: 0 auto 16px;
+    display: flex;
+    justify-content: center;
+}
+
+.spinner {
+    width: 28px;
+    height: 28px;
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    border-top-color: #818cf8;
+    border-radius: 50%;
+    animation: spin 0.8s infinite linear;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes pulse {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.3;
+    }
+}

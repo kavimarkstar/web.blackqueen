@@ -1,0 +1,124 @@
+<header class="border-b border-neutral-900/30 bg-transparent sticky top-0 z-50 w-full">
+    <!-- Navigation Container -->
+    <nav class="mx-auto flex items-center justify-between md:justify-center gap-x-10 p-6 lg:px-8 max-w-7xl">
+
+        <!-- 📱 Mobile Menu Button (පෙන්වන්නේ මොබයිල් වලදී පමණි) -->
+        <div class="flex md:hidden">
+            <button id="mobile-menu-open" type="button"
+                class="text-neutral-300 hover:text-white focus:outline-none transition-all">
+                <svg class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+                </svg>
+            </button>
+        </div>
+
+        <!-- 1. Left Side Buttons (Desktop වලදී පමණක් පෙනේ - Text size: text-base වලට ලොකු කළා) -->
+        <div class="hidden md:flex gap-x-10 items-center text-base font-semibold text-neutral-300">
+            <a href="index.html"
+                class="relative group py-2 transition-all duration-300 hover:text-transparent hover:bg-clip-text hover:bg-gradient-to-r hover:from-blue-400 hover:to-purple-500">
+                Home
+                <!-- වමේ සිට දකුණට ඇදෙන Hover ඉර (left-0) -->
+                <span
+                    class="absolute bottom-0 left-0 w-0 h-[2px] bg-gradient-to-r from-blue-500 to-purple-500 transition-all duration-300 group-hover:w-full"></span>
+            </a>
+            <a href="about.html"
+                class="relative group py-2 transition-all duration-300 hover:text-transparent hover:bg-clip-text hover:bg-gradient-to-r hover:from-blue-400 hover:to-purple-500">
+                About Us
+                <!-- වමේ සිට දකුණට ඇදෙන Hover ඉර (left-0) -->
+                <span
+                    class="absolute bottom-0 left-0 w-0 h-[2px] bg-gradient-to-r from-blue-500 to-purple-500 transition-all duration-300 group-hover:w-full"></span>
+            </a>
+        </div>
+
+        <!-- 2. Center: Logo Only (චුට්ටක් ලොකු කළා: h-10 to h-[44px]) -->
+        <div class="flex items-center px-4 md:px-8">
+            <a href="index.html" class="flex items-center group">
+                <!-- SVG Logo (brightness-0 invert) -->
+                <img src="assets/images/logo.svg" alt="Black Queens Logo"
+                    class="h-10 md:h-[44px] w-auto brightness-0 invert transition-transform duration-300 group-hover:scale-110" />
+            </a>
+        </div>
+
+        <!-- 3. Right Side Buttons (Desktop වලදී පමණක් පෙනේ - Text size: text-base වලට ලොකු කළා) -->
+        <div class="hidden md:flex gap-x-10 items-center text-base font-semibold text-neutral-300">
+            <a href="#"
+                class="relative group py-2 transition-all duration-300 hover:text-transparent hover:bg-clip-text hover:bg-gradient-to-r hover:from-blue-400 hover:to-purple-500">
+                Services
+                <!-- දකුණේ සිට වමට ඇදෙන Hover ඉර (right-0) -->
+                <span
+                    class="absolute bottom-0 right-0 w-0 h-[2px] bg-gradient-to-r from-blue-500 to-purple-500 transition-all duration-300 group-hover:w-full"></span>
+            </a>
+            <a href="#"
+                class="relative group py-2 transition-all duration-300 hover:text-transparent hover:bg-clip-text hover:bg-gradient-to-r hover:from-blue-400 hover:to-purple-500">
+                Launch App
+                <!-- දකුණේ සිට වමට ඇදෙන Hover ඉර (right-0) -->
+                <span
+                    class="absolute bottom-0 right-0 w-0 h-[2px] bg-gradient-to-r from-blue-500 to-purple-500 transition-all duration-300 group-hover:w-full"></span>
+            </a>
+        </div>
+
+        <!-- 📱 Mobile Spacer (මොබයිල් වලදී Logo එක හරියටම මැද තබා ගැනීමට උදව් වේ) -->
+        <div class="w-8 h-8 md:hidden"></div>
+
+    </nav>
+
+    <!-- 📱 Mobile Slide-down Menu Drawer (Full screen / Blurry Black style) -->
+    <div id="mobile-menu"
+        class="hidden fixed inset-0 z-50 bg-neutral-950/95 backdrop-blur-xl p-6 flex flex-col justify-between transition-all duration-300">
+        <div>
+            <!-- Mobile Menu Top Header -->
+            <div class="flex items-center justify-between pb-6 border-b border-neutral-900/50">
+                <a href="index.html">
+                    <img src="assets/images/logo.svg" alt="Black Queens Logo" class="h-10 w-auto brightness-0 invert" />
+                </a>
+                <button id="mobile-menu-close" type="button"
+                    class="text-neutral-300 hover:text-white focus:outline-none">
+                    <svg class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Mobile Links Menu -->
+            <div class="mt-10 flex flex-col gap-y-6 text-xl font-bold text-neutral-300">
+                <a href="index.html"
+                    class="hover:text-transparent hover:bg-clip-text hover:bg-gradient-to-r hover:from-blue-400 hover:to-purple-500 transition-all duration-300">Home</a>
+                <a href="about.html"
+                    class="hover:text-transparent hover:bg-clip-text hover:bg-gradient-to-r hover:from-blue-400 hover:to-purple-500 transition-all duration-300">About
+                    Us</a>
+                <a href="#"
+                    class="hover:text-transparent hover:bg-clip-text hover:bg-gradient-to-r hover:from-blue-400 hover:to-purple-500 transition-all duration-300">Services</a>
+                <a href="#"
+                    class="hover:text-transparent hover:bg-clip-text hover:bg-gradient-to-r hover:from-blue-400 hover:to-purple-500 transition-all duration-300">Launch
+                    App</a>
+            </div>
+        </div>
+
+        <!-- Mobile Drawer Footer -->
+        <div class="text-center text-xs text-neutral-600">
+            © 2026 BLACKQUEENS.
+        </div>
+    </div>
+</header>
+
+<!-- Toggle එක වැඩ කරන්න අවශ්‍ය පුංචි JS කේතය -->
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const openBtn = document.getElementById('mobile-menu-open');
+        const closeBtn = document.getElementById('mobile-menu-close');
+        const menu = document.getElementById('mobile-menu');
+
+        if (openBtn && closeBtn && menu) {
+            openBtn.addEventListener('click', () => {
+                menu.classList.remove('hidden');
+                document.body.style.overflow = 'hidden'; // Menu එක ඇරුණම Background scroll එක නවත්වනවා
+            });
+
+            closeBtn.addEventListener('click', () => {
+                menu.classList.add('hidden');
+                document.body.style.overflow = ''; // නැවත Scroll කරන්න දෙනවා
+            });
+        }
+    });
+</script>

@@ -74,10 +74,10 @@
         const accessToken = urlParams.get('access_token') || hashParams.get('access_token');
 
         // ⚡ Underscore (_) වෙනුවට Hyphen (-) ලෙස සකස් කරන ලදි.
-        let scheme = 'bq_pob';
+        let scheme = 'bq-pob';
         const state = urlParams.get('state') || hashParams.get('state');
-        if (state && state.includes('bq_store')) {
-            scheme = 'bq_store';
+        if (state && state.includes('bq-store')) {
+            scheme = 'bq-store';
         }
 
         const APP_SCHEME = `${scheme}://login-callback`;

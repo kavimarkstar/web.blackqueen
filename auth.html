@@ -19,7 +19,7 @@
     <!-- 2. Main Content Area -->
     <main class="auth-main">
         <div class="container">
-            <!-- Brand Header (Logo top, Brand name bottom) -->
+            <!-- Brand Header -->
             <div class="brand-header">
                 <img src="assets/images/logo.svg" alt="BlackQueens Logo" class="brand-logo">
                 <span class="brand-name">BlackQueens</span>
@@ -28,10 +28,10 @@
             <!-- Success View -->
             <div class="card card-success">
                 <h1>BlackQueens Login Successful</h1>
-                <p>Authentication was successful. Connecting you back to the app...</p>
+                <p>Authentication was successful! You can now close this tab/window and return to the app.</p>
                 <div class="timer">
                     <span class="timer-dot"></span>
-                    <span id="msg">Redirecting to app in <strong id="c">3</strong>s...</span>
+                    <span id="msg">Process Completed.</span>
                 </div>
             </div>
 
@@ -67,46 +67,31 @@
         const code = urlParams.get('code') || hashParams.get('code');
         const accessToken = urlParams.get('access_token') || hashParams.get('access_token');
 
-        // Flutter App එකේ local callback server URL එක
-        const FLUTTER_LOCAL_SERVER = 'http://localhost:3000';
-
-        function redirectToApp(targetUrl) {
-            // සාර්ථක වුණොත් success state එක UI එකේ තත්පරයක් පෙන්වලා redirect කරනවා
+        // සාර්ථක වුණොත් Success Card එක පෙන්වා මෙතැනම නතර කරයි
+        function showSuccessState() {
             document.body.className = 'success';
-            let t = 2;
-            const el = document.getElementById('c');
-            if (el) el.textContent = t;
-
-            const iv = setInterval(() => {
-                t--;
-                if (el) el.textContent = t;
-                if (t <= 0) {
-                    clearInterval(iv);
-                    window.location.replace(targetUrl);
-                }
-            }, 1000);
         }
 
-        // 1. Error එකක් ආවොත් ක්‍රියාත්මක වන කොටස
-        if (error || errorDesc) {
+        // අසාර්ථක වුණොත් Error Card එක පෙන්වා මෙතැනම නතර කරයි
+        function showErrorState(msg) {
             document.body.className = 'error';
+            document.getElementById('error-details').textContent = msg;
+        }
+
+        // 1. මුලින්ම Error එකක් ඇවිත් ඇත්නම්
+        if (error || errorDesc) {
             const cleanError = errorDesc || error || 'Authentication failed.';
-            document.getElementById('error-details').textContent = cleanError;
-            
-            // Flutter app එකටත් error එක pass කරනවා error page එක පෙන්වන්න
-            setTimeout(() => {
-                window.location.replace(`${FLUTTER_LOCAL_SERVER}/?error_description=${encodeURIComponent(cleanError)}`);
-            }, 1500);
+            showErrorState(cleanError);
 
-        // 2. Auth Code (PKCE) එකක් ලැබුණොත් ක්‍රියාත්මක වන කොටස (මේක තමයි ප්‍රධානම එක)
+        // 2. Auth Code (PKCE) එකක් ලැබී ඇත්නම්
         } else if (code) {
-            redirectToApp(`${FLUTTER_LOCAL_SERVER}/?code=${code}`);
+            showSuccessState();
 
-        // 3. Access Token (Implicit Flow) එකක් ලැබුණොත් ක්‍රියාත්මක වන කොටස
+        // 3. Access Token එකක් ලැබී ඇත්නම්
         } else if (accessToken) {
-            redirectToApp(`${FLUTTER_LOCAL_SERVER}/?code=${accessToken}`); // හෝ local server එකට access token එක direct pass කරනවා
+            showSuccessState();
 
-        // 4. මුලින්ම මුකුත් නැත්නම් (සමහර වෙලාවට Hash parameters load වෙන්න ඩිංගක් පරක්කු වෙනවා)
+        // 4. මුලින්ම මුකුත් නැත්නම් (Hash Params පරක්කු වී ලෝඩ් වන නිසා තත්පරයකට පසු නැවත චෙක් කරයි)
         } else {
             setTimeout(() => {
                 const refreshedHashParams = new URLSearchParams(window.location.hash.substring(1));
@@ -114,18 +99,13 @@
                 const secondError = refreshedHashParams.get('error') || refreshedHashParams.get('error_description');
 
                 if (secondAccessToken) {
-                    redirectToApp(`${FLUTTER_LOCAL_SERVER}/?code=${secondAccessToken}`);
+                    showSuccessState();
                 } else if (secondError) {
-                    document.body.className = 'error';
-                    document.getElementById('error-details').textContent = secondError;
-                    setTimeout(() => {
-                        window.location.replace(`${FLUTTER_LOCAL_SERVER}/?error_description=${encodeURIComponent(secondError)}`);
-                    }, 1500);
+                    showErrorState(secondError);
                 } else {
-                    document.body.className = 'error';
-                    document.getElementById('error-details').textContent = 'No authentication response received from Supabase.';
+                    showErrorState('No authentication response received.');
                 }
-            }, 1000); // තත්පර 1ක delay එකකින් නැවත පරීක්ෂා කරයි
+            }, 1000);
         }
     </script>
 </body>

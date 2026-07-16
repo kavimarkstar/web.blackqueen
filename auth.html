@@ -34,7 +34,7 @@
                     <span id="msg">Redirecting to app in <strong id="c">3</strong>s...</span>
                 </div>
 
-                <!-- ⚡ Failsafe Button: Auto-redirect වැඩ නොකලොත් යූසර්ට ක්ලික් කරලා ඇප් එකට යන්න පුළුවන් බටන් එක -->
+                <!-- Open App Button -->
                 <a id="launch-app-btn" href="#" style="display: none; margin-top: 10px; padding: 12px 28px; background: #6366f1; color: white; border-radius: 8px; text-decoration: none; font-weight: 600; align-items: center; gap: 8px; transition: all 0.2s; border: none; cursor: pointer;">
                     <i data-lucide="external-link" style="width: 18px; height: 18px;"></i>
                     Open BlackQueens App
@@ -73,56 +73,47 @@
         const code = urlParams.get('code') || hashParams.get('code');
         const accessToken = urlParams.get('access_token') || hashParams.get('access_token');
 
-        // 1. Dynamic Scheme Detection:
-        // bq_store හෝ bq_pob ඇප් දෙකෙන්ම මේ පේජ් එක පාවිච්චි කරන්න පුළුවන්. 
-        // Default එක විදිහට 'bq_pob' සෙට් කරලා තියෙන්නේ.
-        let scheme = 'bq_pob';
+        // ⚡ Underscore (_) වෙනුවට Hyphen (-) ලෙස සකස් කරන ලදි.
+        let scheme = 'bq-pob';
         const state = urlParams.get('state') || hashParams.get('state');
-        if (state && state.includes('bq_store')) {
-            scheme = 'bq_store';
+        if (state && state.includes('bq-store')) {
+            scheme = 'bq-store';
         }
 
         const APP_SCHEME = `${scheme}://login-callback`;
 
-        // Redirect URL එක හදන ෆන්ක්ෂන් එක
         function getRedirectUrl(params) {
             return `${APP_SCHEME}?${params}`;
         }
 
-        // ඇප් එක ඕපන් කරන්න ට්‍රිගර් කරන ප්‍රධාන ෆන්ක්ෂන් එක
         function triggerRedirect(redirectUrl) {
-            // 1. Browser එකට auto-redirect එකක් දානවා
+            // Auto redirect
             window.location.href = redirectUrl;
 
-            // 2. Browser එකෙන් auto-redirect එක බ්ලොක් කරොත් පාවිච්චි කරන්න බටන් එක සකස් කරනවා
+            // Failsafe Button Setup
             const launchBtn = document.getElementById('launch-app-btn');
             if (launchBtn) {
                 launchBtn.href = redirectUrl;
-                launchBtn.style.display = 'inline-flex'; // බටන් එක පෙන්වනවා
-                
-                // Lucide icons රී-රෙන්ඩර් කරනවා බටන් එක ඇතුලේ අයිකන් එක පේන්න
+                launchBtn.style.display = 'inline-flex';
                 if (typeof lucide !== 'undefined') {
                     lucide.createIcons();
                 }
             }
             
-            // "Redirecting..." මැසේජ් එක වෙනස් කරනවා
             const msgEl = document.getElementById('msg');
             if (msgEl) {
                 msgEl.innerHTML = "If the app didn't open automatically, click the button below.";
             }
             const timerDot = document.querySelector('.timer-dot');
             if (timerDot) {
-                timerDot.style.background = '#e2e8f0'; // ටයිමර් එකේ තිත නිවලා දානවා
+                timerDot.style.background = '#e2e8f0';
             }
         }
 
-        // සාර්ථක වුණොත් Success UI එක පෙන්වනවා
         function showSuccessState(queryParams) {
             document.body.className = 'success';
             const redirectUrl = getRedirectUrl(queryParams);
             
-            // තත්පර 3ක කවුන්ට්-ඩවුන් එකක් දුවනවා ලස්සනට
             let t = 3;
             const el = document.getElementById('c');
             if (el) el.textContent = t;
@@ -137,33 +128,23 @@
             }, 1000);
         }
 
-        // අසාර්ථක වුණොත් Error UI එක පෙන්වනවා
         function showErrorState(msg) {
             document.body.className = 'error';
             document.getElementById('error-details').textContent = msg;
             
-            // Error එකත් ඇප් එකට පාස් කරනවා ඇප් එක ඇතුලෙන් හසුරවන්න පුළුවන් වෙන්න
             const errorUrl = getRedirectUrl(`error=${encodeURIComponent(msg)}`);
             setTimeout(() => {
                 window.location.href = errorUrl;
             }, 2000);
         }
 
-        // --- AUTH FLOW CHECK ---
-
-        // 1. මුලින්ම Error එකක් ඇවිත් ඇත්නම්
+        // --- Flow Check ---
         if (error || errorDesc) {
             showErrorState(errorDesc || error || 'Authentication failed.');
-
-        // 2. Auth Code (PKCE) එක ලැබී ඇත්නම්
         } else if (code) {
             showSuccessState(`code=${code}`);
-
-        // 3. Access Token එකක් ලැබී ඇත්නම්
         } else if (accessToken) {
             showSuccessState(`access_token=${accessToken}`);
-
-        // 4. Hash Params පරක්කු වී ලෝඩ් වන නිසා තත්පරයකට පසු නැවත චෙක් කරයි (Failsafe)
         } else {
             setTimeout(() => {
                 const refreshedHashParams = new URLSearchParams(window.location.hash.substring(1));

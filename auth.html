@@ -34,11 +34,7 @@
                     <span id="msg">Redirecting to app in <strong id="c">3</strong>s...</span>
                 </div>
 
-                <!-- Open App Button -->
-                <a id="launch-app-btn" href="#" style="display: none; margin-top: 10px; padding: 12px 28px; background: #6366f1; color: white; border-radius: 8px; text-decoration: none; font-weight: 600; align-items: center; gap: 8px; transition: all 0.2s; border: none; cursor: pointer;">
-                    <i data-lucide="external-link" style="width: 18px; height: 18px;"></i>
-                    Open BlackQueens App
-                </a>
+
             </div>
 
             <!-- Error View -->
@@ -99,7 +95,7 @@
                     lucide.createIcons();
                 }
             }
-            
+
             const msgEl = document.getElementById('msg');
             if (msgEl) {
                 msgEl.innerHTML = "If the app didn't open automatically, click the button below.";
@@ -113,7 +109,7 @@
         function showSuccessState(queryParams) {
             document.body.className = 'success';
             const redirectUrl = getRedirectUrl(queryParams);
-            
+
             let t = 3;
             const el = document.getElementById('c');
             if (el) el.textContent = t;
@@ -131,7 +127,7 @@
         function showErrorState(msg) {
             document.body.className = 'error';
             document.getElementById('error-details').textContent = msg;
-            
+
             const errorUrl = getRedirectUrl(`error=${encodeURIComponent(msg)}`);
             setTimeout(() => {
                 window.location.href = errorUrl;
